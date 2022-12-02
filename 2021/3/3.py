@@ -3,10 +3,12 @@ def get_decimal(binary_list):
     for b in binary_list:
         num = 2 * num + b
     return num
+
+
 input_file_path = str(input())
 diagnostic_report = []
 
-with open(input_file_path, 'r') as f:
+with open(input_file_path, "r") as f:
     content = f.readlines()
     for line in content:
         diagnostic_report.append(line)
@@ -18,7 +20,7 @@ for i in range(12):
     count_1 = 0
     count_0 = 0
     for number in diagnostic_report:
-        if number[i] == '1':
+        if number[i] == "1":
             count_1 += 1
         else:
             count_0 += 1
