@@ -5,39 +5,44 @@ import aocd
 
 INSTRUCTION_REGEX = r"move (\d+) from (\d+) to (\d+)"
 
+
 @dataclass
 class Instruction:
     number: int
     from_stack: str
     to_stack: str
 
-def read_row(row:str, number_of_stacks:int=9) -> list:
+
+def read_row(row: str, number_of_stacks: int = 9) -> list:
     result = []
     for i in range(0, number_of_stacks):
-        result.append(row[i*4+1].strip())
+        result.append(row[i * 4 + 1].strip())
     return result
 
-def read_stack_drawing(stack_drawing: list, number_of_stacks:int=9) -> dict[list]:
+
+def read_stack_drawing(stack_drawing: list, number_of_stacks: int = 9) -> dict[list]:
     result = {}
     # reverse the list to ultimately retrun a stack.
     for r in reversed(stack_drawing):
-        row =read_row(r, number_of_stacks)
+        row = read_row(r, number_of_stacks)
         for index, item in enumerate(row):
             if item:
-                key = str(index+1)
+                key = str(index + 1)
                 l = result.get(key, [])
                 l.append(item)
                 result[key] = l
     return result
 
-def read_instructon(string:str) -> Instruction:
+
+def read_instructon(string: str) -> Instruction:
     """Return Number of crates from one crate to another"""
     result = re.search(INSTRUCTION_REGEX, string)
     return Instruction(
-        number= int(result.group(1)),
-        from_stack= result.group(2),
-        to_stack= result.group(3),
+        number=int(result.group(1)),
+        from_stack=result.group(2),
+        to_stack=result.group(3),
     )
+
 
 def get_result(stack_drawing: dict[str, list]) -> str:
     result = []
@@ -46,11 +51,12 @@ def get_result(stack_drawing: dict[str, list]) -> str:
         result.append(tmp)
     return "".join(result)
 
-def part_one(input: str, number_of_stacks:int=9, initial_max_crates:int=8) -> str:
+
+def part_one(input: str, number_of_stacks: int = 9, initial_max_crates: int = 8) -> str:
     lines = input.split("\n")
     stack_drawing = read_stack_drawing(lines[0:initial_max_crates], number_of_stacks)
     # apply the instruction to the stack drawing
-    for line in lines[initial_max_crates+2:]:
+    for line in lines[initial_max_crates + 2 :]:
         instruction = read_instructon(line)
         for _ in range(0, instruction.number):
             tmp = stack_drawing[instruction.from_stack].pop()
@@ -59,14 +65,16 @@ def part_one(input: str, number_of_stacks:int=9, initial_max_crates:int=8) -> st
     return get_result(stack_drawing)
 
 
-def part_two(input: str, number_of_stacks:int=9, initial_max_crates:int=8) -> str:
+def part_two(input: str, number_of_stacks: int = 9, initial_max_crates: int = 8) -> str:
     lines = input.split("\n")
     stack_drawing = read_stack_drawing(lines[0:initial_max_crates], number_of_stacks)
     # apply the instruction to the stack drawing
-    for line in lines[initial_max_crates+2:]:
+    for line in lines[initial_max_crates + 2 :]:
         instruction = read_instructon(line)
-        tmp = stack_drawing[instruction.from_stack][-instruction.number:]
-        stack_drawing[instruction.from_stack] = stack_drawing[instruction.from_stack][:-instruction.number]
+        tmp = stack_drawing[instruction.from_stack][-instruction.number :]
+        stack_drawing[instruction.from_stack] = stack_drawing[instruction.from_stack][
+            : -instruction.number
+        ]
         stack_drawing[instruction.to_stack].extend(tmp)
     # get the result
     return get_result(stack_drawing)
@@ -77,6 +85,7 @@ def test(sample):
     assert sample_one == "CMZ"
     sample_two = part_two(sample, number_of_stacks=3, initial_max_crates=3)
     assert sample_two == "MCD"
+
 
 sample = """    [D]    
 [N] [C]    

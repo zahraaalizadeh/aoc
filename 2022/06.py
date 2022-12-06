@@ -15,9 +15,11 @@ def part_one(input: str, number_of_distinct_chars: int = 4) -> int:
         if is_start_of_packet_marker(tmp):
             return i
 
-def part_two(input:str) -> int:
+
+def part_two(input: str) -> int:
     number_of_distinct_chars = 14
     return part_one(input, number_of_distinct_chars)
+
 
 def test(sample: dict[str, int]) -> None:
     for key, value in sample.items():

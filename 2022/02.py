@@ -42,7 +42,6 @@ SHAPE_MATRIX_Q2 = {
 }
 
 
-
 def question_1(data: utils.Data) -> int:
     """
     Calculate total score be if everything goes exactly according to the strategy guide
@@ -53,11 +52,13 @@ def question_1(data: utils.Data) -> int:
         score += SCORE_MATRIX_Q1[row.raw_data] + SHAPE_MATRIX_Q1[row.last().raw_data]
     return score
 
+
 def question_2(data: utils.Data) -> int:
     score = 0
     for row in data.groups:
         score += SCORE_MATRIX_Q2[row.last().raw_data] + SHAPE_MATRIX_Q2[row.raw_data]
     return score
+
 
 def test(sample):
     data = utils.Data(sample)
