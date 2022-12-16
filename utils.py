@@ -44,9 +44,13 @@ class Group:
         self.items = self._read_data()
 
     def _read_data(self) -> list["Item"]:
-        return [
-            Item(raw_data=item) for item in self.raw_data.split(self.level2_separator)
-        ]
+        if self.level2_separator == "":
+            return [Item(raw_data=item) for item in self.raw_data]
+        else:
+            return [
+                Item(raw_data=item)
+                for item in self.raw_data.split(self.level2_separator)
+            ]
 
     def first(self) -> "Item":
         return self.items[0]
@@ -65,3 +69,12 @@ class Group:
 @dataclasses.dataclass
 class Item:
     raw_data: str
+
+    def __gt__(self, other):
+        return self.raw_data > other.raw_data
+
+    def __lt__(self, other):
+        return self.raw_data < other.raw_data
+
+    def __eq__(self, other):
+        return self.raw_data == other.raw_data

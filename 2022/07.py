@@ -26,18 +26,22 @@ class Node:
     parent_directory: Node | None
     size: int = 0
 
+
 file_system = {}
+
 
 def reset_file_system() -> None:
     root = Node(name="/", filename="/", file_type=FileType.DIR, parent_directory=None)
     file_system = {"/": root}
 
-def get_filename(current_path: str, name:str)->str:
+
+def get_filename(current_path: str, name: str) -> str:
     filename = current_path + "/" + name
     filename = filename.replace("//", "/")
     return filename
 
-def get_new_current_path(current_path: str, new_path:str) -> str:
+
+def get_new_current_path(current_path: str, new_path: str) -> str:
     if new_path == "/":
         current_path = "/"
     elif new_path == "..":
@@ -89,7 +93,8 @@ def update_file_details(current_path: str, name: str, size: int) -> None:
     if filename not in file_system:
         add_new_file(current_path, filename, name, size)
 
-def read_input(input:str) -> None:
+
+def read_input(input: str) -> None:
     current_path = "/"
     lines = input.split("\n")
     for line in lines:
@@ -110,12 +115,13 @@ def read_input(input:str) -> None:
             name = match.group(2)
             update_file_details(current_path, name, size)
 
+
 def calculate_dir_size() -> None:
     for filename, node in file_system.items():
         if node.file_type == FileType.FILE:
             # Add the file size to all parent directories
             parents = filename.split("/")[:-1]
-            while(parents):
+            while parents:
                 dir_filename = "/".join(parents)
                 if not dir_filename:
                     dir_filename = "/"
@@ -130,7 +136,7 @@ def calculate_dir_size() -> None:
 
 def part_one(input: str) -> int:
     reset_file_system()
-    read_input(input)  
+    read_input(input)
     calculate_dir_size()
     result = 0
     for node in file_system.values():
@@ -138,6 +144,7 @@ def part_one(input: str) -> int:
             if node.size <= 100000:
                 result = result + node.size
     return result
+
 
 def part_two() -> int:
     root = file_system["/"]
@@ -148,10 +155,10 @@ def part_two() -> int:
         if node.file_type == FileType.DIR and result > node.size >= required_space:
             result = node.size
     return result
-                
+
 
 def print_file_system():
-    for key, node in sorted(file_system.items(), key=lambda x: x[0]): 
+    for key, node in sorted(file_system.items(), key=lambda x: x[0]):
         print(f"{key} : {node.file_type} - {node.size}")
 
 
